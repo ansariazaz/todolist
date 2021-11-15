@@ -21,14 +21,13 @@ const Add = () => {
 
     const [isEdit, setIsEdit] = useState(false);
 
-    const [sumData, setSumData] = useState({'Malta':0,'Sonfee':0, 'Santra':0});
+    const [sumData, setSumData] = useState([]);
 
-    useEffect(()=>{
+    useEffect(() => {
         let malta = sumValue('Malta')
         let sonfe = sumValue('Sonfee')
         let santra = sumValue('Santra')
-
-        setSumData({'Malta':malta,'Sonfee':sonfe, 'Santra':santra})
+        setSumData([{ name:'Malta', count: malta }, { name: 'Sonfee', count: sonfe }, { name: 'Santra', count: santra }])
 
     }, [item])
 
@@ -63,7 +62,7 @@ const Add = () => {
 
     function sumValue(cocktail) {
 
-        let selectedCockTail = item.filter(data=>data.name.cocktail == cocktail)
+        let selectedCockTail = item.filter(data => data.name.cocktail == cocktail)
 
         let sum = 0;
         for (let i = 0; i < selectedCockTail.length; i++) {
@@ -131,9 +130,11 @@ const Add = () => {
             </form>
             <div className="entry-section">
                 <h1 className="entry">Entries</h1>
-                <span>#1 Malta({sumData['Malta']})</span>
-                <span>#2 Sönfee({sumData['Sonfee']})</span>
-                <span>#3 Santrá({sumData['Santra']})</span>
+                {sumData && sumData.sort((a, b) => (a.count > b.count) ? -1 : 1).map((e, index) => {
+                    return <span key={index}>#{index + 1} {e.name}({e.count})</span>
+                })}
+
+        
                 <div className="entry-head">
                     <p>Name</p>
                     <p>Cocktail</p>
